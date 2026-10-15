@@ -20,9 +20,11 @@ const automationBreachCosts = [
 const sourceIndia2026 = 'https://in.newsroom.ibm.com/India-Records-its-Highest-Average-Cost-of-a-Data-Breach-2026';
 const sourceIndia2025 = 'https://in.newsroom.ibm.com/2025-08-07-India-Records-Highest-Average-Cost-of-a-Data-Breach-IBM';
 const sourceGlobal = 'https://www.ibm.com/reports/data-breach';
+const sourceGlobal2025 = 'https://www.ibm.com/think/x-force/2025-cost-of-a-data-breach-navigating-ai';
+const sourceGlobal2024 = 'https://newsroom.ibm.com/2024-07-30-ibm-report-escalating-data-breach-disruption-pushes-costs-to-new-highs';
 
 type CostMarket = 'india' | 'global';
-function FinancialImpact(){
+function FinancialImpact({showPrimary=true,showAutomation=true}:{showPrimary?:boolean;showAutomation?:boolean}){
   const [market,setMarket]=useState<CostMarket>('india');
   const [showTable,setShowTable]=useState(false);
   const [animateBars,setAnimateBars]=useState(false);
@@ -52,9 +54,10 @@ function FinancialImpact(){
   const ticks=india?[0,5,10,15,20,25,30]:[0,1,2,3,4,5,6];
   const formatValue=(value:number)=>india?`₹${value.toFixed(1)} crore`:`$${value.toFixed(2)} million`;
   const tooltipTrigger=touchTooltips?'click':'hover';
+  const tableId=showPrimary?'financial-data-table-main':'financial-data-table-appendix';
   return <div className="financial-content" ref={chapterRef}>
     <div className="financial-charts">
-      <section className="financial-card" aria-labelledby="breach-cost-title">
+      {showPrimary&&<section className="financial-card" aria-labelledby="breach-cost-title">
         <div className="financial-card-head">
           <div><span className="chart-kicker">AVERAGE ORGANIZATIONAL COST</span><h3 id="breach-cost-title">Cost per breach</h3></div>
           <div className="market-toggle" role="group" aria-label="Choose breach-cost region">
@@ -79,10 +82,10 @@ function FinancialImpact(){
         </div>
         <p className="chart-help">Hover, tap, or use the chart arrow keys. Exact values stay visible above the bars.</p>
         <div className="source-links" aria-label="Breach cost sources">
-          {india?<><a href={sourceIndia2026} target="_blank" rel="noreferrer">IBM India 2026 <ExternalLink size={12}/></a><a href={sourceIndia2025} target="_blank" rel="noreferrer">IBM India 2025 + 2024 <ExternalLink size={12}/></a></>:<a href={sourceGlobal} target="_blank" rel="noreferrer">IBM global report <ExternalLink size={12}/></a>}
+          {india?<><a href={sourceIndia2026} target="_blank" rel="noreferrer">IBM India 2026 <ExternalLink size={12}/></a><a href={sourceIndia2025} target="_blank" rel="noreferrer">IBM India 2025 + 2024 <ExternalLink size={12}/></a></>:<><a href={sourceGlobal} target="_blank" rel="noreferrer">IBM global 2026 <ExternalLink size={12}/></a><a href={sourceGlobal2025} target="_blank" rel="noreferrer">IBM global 2025 <ExternalLink size={12}/></a><a href={sourceGlobal2024} target="_blank" rel="noreferrer">IBM global 2024 <ExternalLink size={12}/></a></>}
         </div>
-      </section>
-      <section className="financial-card automation-card" aria-labelledby="automation-title">
+      </section>}
+      {showAutomation&&<section className="financial-card automation-card" aria-labelledby="automation-title">
         <div className="financial-card-head">
           <div><span className="chart-kicker">INDIA · 2026</span><h3 id="automation-title">Breach cost by security AI and automation use</h3></div>
         </div>
@@ -104,16 +107,16 @@ function FinancialImpact(){
         <div className="observed-difference"><strong>₹10.3 crore</strong><span>observed difference<br/>No use vs extensive use</span></div>
         <p className="association-note">An association reported across studied organizations.<br/>Not guaranteed savings, causal proof or an AttackTwin benchmark.</p>
         <a className="source-link" href={sourceIndia2026} target="_blank" rel="noreferrer">IBM India 2026 source <ExternalLink size={12}/></a>
-      </section>
+      </section>}
     </div>
     <div className="financial-footer">
-      <p>Average organizational cost per breach in IBM’s study. Report years are shown. Figures are not annual losses.</p>
-      <button type="button" className="table-toggle" aria-expanded={showTable} aria-controls="financial-data-table" onClick={()=>setShowTable(value=>!value)}>{showTable?'Hide data table':'View data table'} <ArrowDown size={13}/></button>
+      <p>Average organizational cost per breach in the cited IBM study. These are not annual losses or guaranteed AttackTwin savings.</p>
+      <button type="button" className="table-toggle" aria-expanded={showTable} aria-controls={tableId} onClick={()=>setShowTable(value=>!value)}>{showTable?'Hide data table':'View data table'} <ArrowDown size={13}/></button>
     </div>
-    {showTable&&<div className="financial-table-wrap" id="financial-data-table"><table><caption>IBM Cost of a Data Breach values used in these charts</caption><thead><tr><th scope="col">Measure</th><th scope="col">Period / group</th><th scope="col">Average cost</th></tr></thead><tbody>
-      {indiaBreachCosts.map(row=><tr key={`india-${row.year}`}><th scope="row">India</th><td>{row.year}</td><td>₹{row.cost.toFixed(1)} crore</td></tr>)}
-      {globalBreachCosts.map(row=><tr key={`global-${row.year}`}><th scope="row">Global</th><td>{row.year}</td><td>US${row.cost.toFixed(2)} million</td></tr>)}
-      {automationBreachCosts.map(row=><tr key={row.level}><th scope="row">India · AI/automation</th><td>{row.level} · 2026</td><td>₹{row.cost.toFixed(1)} crore</td></tr>)}
+    {showTable&&<div className="financial-table-wrap" id={tableId}><table><caption>IBM Cost of a Data Breach values used in these charts</caption><thead><tr><th scope="col">Measure</th><th scope="col">Period / group</th><th scope="col">Average cost</th></tr></thead><tbody>
+      {showPrimary&&indiaBreachCosts.map(row=><tr key={`india-${row.year}`}><th scope="row">India</th><td>{row.year}</td><td>₹{row.cost.toFixed(1)} crore</td></tr>)}
+      {showPrimary&&globalBreachCosts.map(row=><tr key={`global-${row.year}`}><th scope="row">Global</th><td>{row.year}</td><td>US${row.cost.toFixed(2)} million</td></tr>)}
+      {showAutomation&&automationBreachCosts.map(row=><tr key={row.level}><th scope="row">India · AI/automation</th><td>{row.level} · 2026</td><td>₹{row.cost.toFixed(1)} crore</td></tr>)}
     </tbody></table></div>}
   </div>;
 }

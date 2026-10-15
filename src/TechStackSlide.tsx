@@ -22,9 +22,11 @@ const layers: { name: string; technologies: Technology[]; note?: string }[] = [
     name: '01 · FRONTEND & VISUALIZATION',
     technologies: [
       { name: 'React + TypeScript', status: 'Implemented', role: 'Renders the presentation, evidence inspector, graph controls and intervention simulation.', input: 'Synthetic event and asset data held in the browser.', output: 'Interactive dashboard with shared client-side state.', example: 'Selecting a replay event updates its evidence and predicted next step.' },
+      { name: 'SVG + CSS', status: 'Implemented', role: 'Draws the current illustrative graph and its path labels in the browser.', input: 'Predefined scenario nodes, edges and selected route.', output: 'Interactive, styled graph illustration.', example: 'Choose a path to emphasize its modeled sequence.' },
       { name: 'Cytoscape.js', status: 'Planned MVP', role: 'Proposed graph interaction and analytical layout library.', input: 'Typed assets and relationships from the graph API.', output: 'Selectable graph nodes, relationships and route overlays.', example: 'Highlight the identity-to-customer-data path while dimming unrelated assets.' },
       { name: 'Three.js', status: 'Future extension', role: 'Optional real-time 3D visualization for the cinematic network scene.', input: 'Graph topology and presentation state.', output: 'A rendered 3D overview scene.', example: 'Animate a restrained event pulse across a candidate route.' },
       { name: 'GSAP ScrollTrigger', status: 'Implemented', role: 'Coordinates scroll-aware chapter state and visual transitions.', input: 'Scroll position and chapter boundaries.', output: 'Chapter updates and synchronized demo replay progress.', example: 'Scrolling through the synthetic replay advances the visible event.' },
+      { name: 'Lenis', status: 'Implemented', role: 'Provides smooth wheel-driven scrolling for the presentation.', input: 'User scroll input.', output: 'Smoothed page-scroll updates shared with GSAP ScrollTrigger.', example: 'A chapter jump scrolls to the corresponding reading area.' },
     ],
   },
   {
@@ -140,19 +142,17 @@ function TechStackSlide() {
   };
 
   return <div className="techstack-panel" aria-label="AttackTwin technology and intelligence engine">
-    <div className="techstack-reveal" role="group" aria-label="Slide 8 content reveals">
+    <div className="techstack-reveal" role="group" aria-label="Chapter 7 content reveals">
       <span className="techstack-step-count">0{reveal} / 02</span>
-      <button type="button" onClick={() => setReveal(1)} onKeyDown={onRevealKeyDown} aria-pressed={reveal === 1} className={reveal === 1 ? 'active' : ''}>01&nbsp; CORE TECHNOLOGY</button>
-      <button type="button" onClick={() => setReveal(2)} onKeyDown={onRevealKeyDown} aria-pressed={reveal === 2} className={reveal === 2 ? 'active' : ''}>02&nbsp; ML &amp; THREAT INTELLIGENCE</button>
+      <button type="button" onClick={() => setReveal(1)} onKeyDown={onRevealKeyDown} aria-pressed={reveal === 1} className={reveal === 1 ? 'active' : ''}>01&nbsp; ARCHITECTURE &amp; IMPLEMENTATION</button>
+      <button type="button" onClick={() => setReveal(2)} onKeyDown={onRevealKeyDown} aria-pressed={reveal === 2} className={reveal === 2 ? 'active' : ''}>02&nbsp; SECURITY REASONING</button>
     </div>
 
     {reveal === 1 ? <div className="techstack-reveal-content" key="core">
-      <div className="techstack-flow" aria-label="Prototype data flow">
-        {['Telemetry', 'FastAPI', 'PostgreSQL + NetworkX', 'Action optimizer', 'React dashboard'].map((step, index) => <div className="techstack-flow-step" key={step}>
-          <span>{step}</span>{index < 4 && <ArrowRight aria-hidden="true" size={15}/>}
-        </div>)}
+      <div className="techstack-flow-pair">
+        <div className="techstack-flow-track current-track"><div className="techstack-flow-label"><span>CURRENT PROTOTYPE</span><b>IMPLEMENTED</b></div><div className="techstack-flow" aria-label="Implemented browser prototype flow">{['Synthetic events', 'TypeScript rules + optimizer', 'React dashboard'].map((step, index) => <div className="techstack-flow-step" key={step}><span>{step}</span>{index < 2 && <ArrowRight aria-hidden="true" size={15}/>}</div>)}</div></div>
+        <div className="techstack-flow-track planned-track"><div className="techstack-flow-label"><span>PLANNED SERVICE ARCHITECTURE</span><b>PLANNED MVP</b></div><div className="techstack-flow" aria-label="Planned service architecture">{['Telemetry', 'FastAPI', 'PostgreSQL + NetworkX', 'Python optimizer', 'React dashboard'].map((step, index) => <div className="techstack-flow-step" key={step}><span>{step}</span>{index < 4 && <ArrowRight aria-hidden="true" size={15}/>}</div>)}</div></div>
       </div>
-      <p className="techstack-flow-caption">TARGET ARCHITECTURE · SERVER COMPONENTS ARE PLANNED</p>
       <div className="techstack-layers">
         {layers.map(layer => <section className="techstack-layer" key={layer.name} aria-label={layer.name}>
           <h3>{layer.name}</h3>
@@ -200,6 +200,7 @@ function TechStackSlide() {
         </section>
       </div>
       <div className="techstack-feasibility-note"><b>Feasibility remains deterministic.</b> Learned scores may reorder valid candidate paths; they cannot create nonexistent permissions, entities or connections.</div>
+      <section className="techstack-reasoning" aria-label="Security frameworks referenced by the prototype"><h4>SECURITY FRAMEWORKS · REFERENCED, NOT INTEGRATED</h4><div><article><b>STRIDE</b><span>Threats at components and trust boundaries.</span></article><article><b>MITRE ATT&amp;CK</b><span>Behavior context; Valid Accounts may contextualize supported credential misuse.</span></article><article><b>MITRE Attack Flow</b><span>Structure connected attack-action narratives.</span></article><article><b>MITRE D3FEND</b><span>Defensive countermeasure vocabulary.</span></article></div><p><b>Vulnerability enrichment:</b> CVE identifies · CVSS severity · EPSS exploitation-likelihood context · CISA KEV known exploitation. These mappings add context; permissions, prerequisites and evidence establish feasibility. Scoring and optimization are separate.</p></section>
       <button className="techstack-back" type="button" onClick={() => setReveal(1)}><ArrowLeft size={15}/> Back to core technology</button>
     </div>}
 
