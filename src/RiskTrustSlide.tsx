@@ -1,32 +1,26 @@
-import { ArrowRight, ShieldAlert } from 'lucide-react';
-
-const factors = ['Credential validity', 'Permissions', 'Exposure', 'Exploit prerequisites', 'Defensive controls', 'Observed activity', 'Asset criticality'];
-const trust = [
-  ['Source reliability', 'Source-specific; not scored'],
-  ['Freshness', 'Event timestamp shown'],
-  ['Corroboration', 'Not independently established'],
-  ['Entity matching', 'Inventory link; validity unverified'],
-  ['Prerequisite coverage', 'Role and access need validation'],
-];
+import { ArrowRight } from 'lucide-react';
 
 export default function RiskTrustSlide() {
   return <div className="risk-trust-panel">
-    <div className="risk-trust-main">
-      <div className="risk-card">
-        <span className="risk-kicker">RISK · POTENTIAL IMPACT + MODELED ROUTE</span>
-        <h3>Critical potential impact</h3>
-        <p>Path A reaches sensitive customer-data storage if the credential, principal binding and role permissions are valid.</p>
-        <div className="risk-factor-list">{factors.map(factor => <span key={factor}>{factor}</span>)}</div>
-        <small>Path priorities are predefined scenario categories. This prototype does not calculate likelihood or a numeric risk score.</small>
-      </div>
-      <div className="trust-card">
-        <span className="risk-kicker">TRUST VECTOR · EVIDENCE QUALITY</span>
-        <h3>Early evidence · verify before escalation</h3>
-        <p>Secret exposure observed. Credential validity and downstream permissions require verification.</p>
-        <dl>{trust.map(([name, value]) => <div key={name}><dt>{name}</dt><dd>{value}</dd></div>)}</dl>
-        <b className="risk-recommendation">NEXT STEP <ArrowRight size={14}/> Validate key status, principal binding and role policy.</b>
-      </div>
+    <span className="synthetic-label">SYNTHETIC PROTOTYPE · PRIORITIES ARE PREDEFINED SCENARIO CATEGORIES</span>
+    <div className="risk-decision-grid">
+      <article className="risk-decision-card">
+        <span>RISK</span>
+        <h3>Potential likelihood × business impact</h3>
+        <p>Path A could reach sensitive customer-data storage if the credential and role permissions are valid.</p>
+      </article>
+      <article className="risk-decision-card">
+        <span>TRUST</span>
+        <h3>Evidence quality and completeness</h3>
+        <p>A secret finding is observed. Credential validity, principal binding and downstream permissions still need confirmation.</p>
+      </article>
+      <article className="risk-decision-card decision-next">
+        <span>DECISION · NEXT STEP</span>
+        <h3>Path A: urgent validation</h3>
+        <p>Sensitive customer data is potentially reachable. Verify credential validity and role permissions; contain access if confirmed.</p>
+        <ArrowRight size={18} aria-hidden="true"/>
+      </article>
     </div>
-    <div className="proposed-inference"><ShieldAlert size={17}/><span><b>PROPOSED INTELLIGENCE · NOT IMPLEMENTED</b> Bayesian updates for defined hypotheses → Monte Carlo target-reachability estimates → risk assessment. Results depend on evidence dependencies and transition assumptions; neither method is automatically calibrated.</span></div>
+    <details className="scope-assumptions"><summary>Scope &amp; assumptions</summary><p>Current priorities are predefined scenario categories. This prototype calculates neither likelihood nor a numeric risk/trust score. Bayesian evidence updating and probability calibration are proposed, not implemented.</p></details>
   </div>;
 }
